@@ -1,0 +1,2357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omnis - Secure Digital Inheritance & Asset Transfer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2d4a80;
+            --secondary: #0ea5e9;
+            --accent: #10b981;
+            --accent-light: #34d399;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .section {
+            padding: 6rem 0;
+        }
+        
+        .section-dark {
+            background-color: var(--dark);
+            color: white;
+        }
+        
+        .section-light {
+            background-color: var(--light);
+        }
+        
+        .section-gray {
+            background-color: #f1f5f9;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-sm {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-accent {
+            background: var(--gradient-accent);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        /* --- Page Simulation Styles --- */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+        
+        .page.active {
+            display: block;
+        }
+
+        .form-card {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-card h2 {
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            background: white;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group input[type="file"] {
+            padding: 0.6rem 1rem;
+        }
+        
+        .form-group-inline {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .form-group-inline .form-group {
+            flex: 1;
+        }
+
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-link {
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .text-link:hover {
+            text-decoration: underline;
+        }
+
+        .mt-2 {
+            margin-top: 2rem;
+        }
+        
+        /* --- Pro Dashboard Styles --- */
+        .dash-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        
+        .dash-sidebar {
+            flex: 0 0 250px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            position: sticky;
+            top: 100px;
+        }
+
+        .dash-sidebar-header {
+            border-bottom: 2px solid var(--gray-light);
+            padding-bottom: 1rem;
+        }
+        .dash-sidebar-header h3 {
+            margin-bottom: 0.25rem;
+            color: var(--primary);
+        }
+        .dash-sidebar-header p {
+            font-size: 0.9rem;
+            color: var(--gray);
+            word-break: break-all;
+        }
+
+        .dash-nav {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+        .dash-nav li {
+            margin-bottom: 0.5rem;
+        }
+        .dash-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .dash-nav a:hover, .dash-nav a.active {
+            background-color: var(--gray-light);
+            color: var(--primary);
+        }
+        .dash-nav a i {
+            width: 20px;
+        }
+        .dash-nav a#logoutBtn {
+            color: var(--danger);
+        }
+        .dash-nav a#logoutBtn:hover {
+            background-color: var(--danger-light);
+        }
+        
+        .dash-content {
+            flex: 1;
+        }
+        
+        .dash-section {
+            display: none; /* Hidden by default, JS will manage */
+        }
+        .dash-section.active {
+            display: block;
+        }
+        
+        .dash-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+        }
+        .summary-card.warning {
+            background: var(--warning-light);
+            border: 1px solid var(--warning);
+        }
+        .summary-card.warning .summary-value {
+            color: var(--warning);
+        }
+        
+        .summary-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        .summary-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: var(--gray-light);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1.15rem;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            width: 0%; /* Will be set by JS */
+            background: var(--gradient-accent);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .dash-card {
+             background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .dash-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--gray-light);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .dash-card-header h2 {
+            color: var(--primary);
+            margin-bottom: 0;
+        }
+        
+        .item-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .item-card {
+            background: var(--light);
+            border: 1px solid var(--gray-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .item-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .item-card-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: white;
+        }
+        .icon-bank { background: var(--primary); }
+        .icon-crypto { background: #f7931a; }
+        .icon-social { background: #1da1f2; }
+        .icon-file { background: var(--secondary); }
+        .icon-estate { background: #059669; }
+        .icon-other { background: var(--gray); }
+        .icon-nominee { background: var(--accent); }
+        .icon-verifier { background: var(--warning); }
+        
+        .item-card-header h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+        .item-card-header p {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .item-card-body {
+            margin: 1.5rem 0;
+            border-top: 1px dashed var(--gray-light);
+            padding-top: 1.5rem;
+        }
+        
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--gray);
+        }
+        .detail-row i {
+            width: 16px;
+            text-align: center;
+            color: var(--primary);
+        }
+        .detail-row strong {
+            color: var(--dark);
+        }
+
+        .item-card-body ul {
+            list-style: none;
+            padding-left: 5px;
+        }
+        .item-card-body li {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .item-card-body li i {
+            color: var(--accent);
+            margin-right: 0.5rem;
+        }
+        .item-card-body .placeholder-text-small {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--gray);
+        }
+        
+        .item-card-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+        
+        .btn-icon {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            font-size: 0.9rem;
+        }
+        .btn-icon:hover {
+            background: var(--gray-light);
+        }
+        .btn-icon.delete {
+            color: var(--danger);
+        }
+        .btn-icon.delete:hover {
+            background: var(--danger-light);
+        }
+        
+        .placeholder-text {
+            color: var(--gray);
+            font-style: italic;
+            text-align: center;
+            padding: 2rem;
+        }
+        /* --- End Dashboard Styles --- */
+        
+
+        /* Hero Section */
+        .hero {
+            padding: 10rem 0 6rem;
+            background: var(--gradient);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.1"><polygon fill="white" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-size: cover;
+        }
+        
+        .hero-content {
+            max-width: 700px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .hero-stat {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .hero-stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Stats Section */
+        .stats {
+            background-color: white;
+            padding: 4rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+        
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        /* Problem Section */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .problem-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .problem-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 1.8rem;
+        }
+        
+        .problem-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Solution Section */
+        .solution-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        
+        .step:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .step-visual {
+            flex: 1;
+            min-height: 300px;
+            background: var(--gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .step-content h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Security Section */
+        .security-content {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+        
+        .security-text {
+            flex: 1;
+        }
+        
+        .security-visual {
+            flex: 1;
+            background: var(--gradient);
+            border-radius: 16px;
+            padding: 3rem;
+            color: white;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .security-point {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+        
+        .security-point i {
+            margin-right: 1rem;
+            font-size: 1.5rem;
+            color: var(--accent-light);
+            margin-top: 0.2rem;
+        }
+        
+        .security-point h3 {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Pricing Section */
+        .pricing-plans {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .pricing-card {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem 2.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .pricing-card.featured {
+            border: 2px solid var(--secondary);
+            transform: scale(1.05);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-accent);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .plan-price span {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2.5rem;
+            text-align: left;
+        }
+        
+        .plan-features li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .plan-features li i {
+            margin-right: 0.8rem;
+            color: var(--accent);
+        }
+        
+        .plan-features li i.fa-times {
+            color: var(--danger);
+        }
+        
+        /* FAQ Section */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 500px;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
+            border-radius: 20px;
+            margin: 0 auto;
+            max-width: 1000px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta p {
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 5rem 0 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-links a[role="button"] {
+            cursor: pointer;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .step {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .step:nth-child(even) {
+                flex-direction: column;
+            }
+            .security-content {
+                flex-direction: column;
+            }
+            .dash-container {
+                flex-direction: column;
+            }
+            .dash-sidebar {
+                position: static;
+                width: 100%;
+                flex: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .auth-buttons {
+                display: none;
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+            .auth-buttons.active {
+                display: flex;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .fade-in.active-anim {
+            opacity: 1;
+        }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        
+        /* Trust badges */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+            font-weight: 500;
+        }
+        
+        .trust-badge i {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo" id="logoBtn">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h1>Omnis</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#problem" class="nav-anchor">The Problem</a></li>
+                    <li><a href="#solution" class="nav-anchor">Our Solution</a></li>
+                    <li><a href="#features" class="nav-anchor">Features</a></li>
+                    <li><a href="#security" class="nav-anchor">Security</a></li>
+                    <li><a href="#pricing" class="nav-anchor">Pricing</a></li>
+                    <li><a href="#faq" class="nav-anchor">FAQ</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline btn-sm" id="loginNavBtn">Login</button>
+                    <button class="btn btn-primary btn-sm" id="getStartedNavBtn">Get Started</button>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page active" id="page-landing">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content fade-in active-anim">
+                    <h1>Secure Digital Inheritance for Your Loved Ones</h1>
+                    <p>Omnis ensures your financial and digital assets are securely transferred to your heirs, combining military-grade encryption with human verification.</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-accent" id="secureLegacyBtn">
+                            <i class="fas fa-lock"></i> Secure Your Legacy
+                        </button>
+                        </div>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <div class="hero-stat-number">₹1.84 Lakh Cr</div>
+                            <div class="hero-stat-label">Total Unclaimed Financial Assets</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-number">1.2M+</div>
+                            <div class="hero-stat-label">Assets Secured</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-number">99.9%</div>
+                            <div class="hero-stat-label">Uptime Guarantee</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-item fade-in">
+                        <div class="stat-icon"><i class="fas fa-wallet"></i></div>
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label">Asset Types</div>
+                    </div>
+                    <div class="stat-item fade-in delay-1">
+                        <div class="stat-icon"><i class="fas fa-user-shield"></i></div>
+                        <div class="stat-number">256-bit</div>
+                        <div class="stat-label">Encryption</div>
+                    </div>
+                    <div class="stat-item fade-in delay-2">
+                        <div class="stat-icon"><i class="fas fa-globe"></i></div>
+                        <div class="stat-number">120+</div>
+                        <div class="stat-label">Countries</div>
+                    </div>
+                    <div class="stat-item fade-in delay-3">
+                        <div class="stat-icon"><i class="fas fa-award"></i></div>
+                        <div class="stat-number">4.9/5</div>
+                        <div class="stat-label">User Rating</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-light" id="problem">
+            <div class="container">
+                <div class="section-title">
+                    <h2>The Trillion Dollar Problem</h2>
+                    <p>When someone passes away, their financial and digital assets often remain inaccessible, creating significant challenges for families worldwide.</p>
+                </div>
+                <div class="problem-grid">
+                    <div class="problem-card fade-in">
+                        <div class="problem-icon"><i class="fas fa-coins"></i></div>
+                        <h3>Cryptocurrency Assets</h3>
+                        <p>Without private keys, crypto wallets become permanently inaccessible, locking away billions in digital assets that traditional wills can't manage.</p>
+                    </div>
+                    <div class="problem-card fade-in delay-1">
+                        <div class="problem-icon"><i class="fas fa-university"></i></div>
+                        <h3>Bank Accounts & Insurance</h3>
+                        <p>Complex processes leave assets unclaimed. In India, over ₹78,000 Cr is in dormant bank deposits and ₹25,000 Cr in unclaimed insurance.</p>
+                    </div>
+                    <div class="problem-card fade-in delay-2">
+                        <div class="problem-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3>Stock Portfolios</h3>
+                        <p>Dematerialized shares and trading accounts often go unclaimed. Over ₹11,000 Crore in shares are currently held by the IEPF in India alone.</p>
+                    </div>
+                    <div class="problem-card fade-in delay-3">
+                        <div class="problem-icon"><i class="fas fa-ghost"></i></div>
+                        <h3>Digital Ghosts & Wills</h3>
+                        <p>Traditional wills are expensive and ignore digital assets. Social media, cloud accounts, and email vanish, leaving a "Digital Ghost" and locking away memories.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-gray" id="solution">
+             <div class="container">
+                <div class="section-title">
+                    <h2>How Omnis Solves This</h2>
+                    <p>Our unique approach combines cutting-edge technology with human verification to ensure secure and reliable asset transfer.</p>
+                </div>
+                <div class="solution-steps">
+                    <div class="step fade-in">
+                        <div class="step-visual"><i class="fas fa-vault"></i></div>
+                        <div class="step-content">
+                            <div class="step-number">1</div>
+                            <h3>Secure Digital Vault</h3>
+                            <p>Store encrypted information for all your assets—bank accounts, crypto, property, digital accounts, and personal memories—in one safe place with our zero-knowledge architecture.</p>
+                        </div>
+                    </div>
+                    <div class="step fade-in delay-1">
+                        <div class="step-visual"><i class="fas fa-user-check"></i></div>
+                        <div class="step-content">
+                            <div class="step-number">2</div>
+                            <h3>Human-Centric Verification</h3>
+                            <p>Our system releases assets only when trusted people you designate confirm you have passed. This human verification check prevents mistakes, fraud, and premature access.</p>
+                        </div>
+                    </div>
+                    <div class="step fade-in delay-2">
+                        <div class="step-visual"><i class="fas fa-robot"></i></div>
+                        <div class="step-content">
+                            <div class="step-number">3</div>
+                            <h3>AI-Powered Discovery & Guidance</h3>
+                            <p>Our AI algorithms continuously scan for unclaimed assets linked to you. We then **guide your family step-by-step** on exactly how to claim everything, making the inheritance process simple and stress-free.</p>
+                        </div>
+                    </div>
+                    <div class="step fade-in delay-3">
+                        <div class="step-visual"><i class="fas fa-globe-asia"></i></div>
+                        <div class="step-content">
+                            <div class="step-number">4</div>
+                            <h3>India & Global Compliance</h3>
+                            <p>We ensure all transfers comply with local and global regulations. We specialize in unlocking the **₹1.84 Lakh Crore** in unclaimed assets in India and protecting trillions in digital wealth worldwide.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-light" id="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Powerful Features</h2>
+                    <p>Omnis offers a comprehensive suite of tools to manage and secure your entire digital legacy.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Military-Grade Encryption</h3>
+                        <p>Your data is protected with AES-256 encryption, ensuring only authorized parties can access sensitive information with our zero-knowledge architecture.</p>
+                    </div>
+                    <div class="feature-card fade-in delay-1">
+                        <div class="feature-icon"><i class="fas fa-user-check"></i></div>
+                        <h3>Human Verification System</h3>
+                        <p>Our team of specialists confirms events through multiple channels before initiating any transfers, adding a crucial human layer to our automated systems.</p>
+                    </div>
+                    <div class="feature-card fade-in delay-2">
+                        <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                        <h3>AI-Powered Asset Discovery</h3>
+                        <p>Our advanced algorithms continuously scan for unclaimed assets across thousands of financial institutions and digital platforms worldwide.</p>
+                    </div>
+                    <div class="feature-card fade-in delay-3">
+                        <div class="feature-icon"><i class="fas fa-file-contract"></i></div>
+                        <h3>Legal Document Storage</h3>
+                        <p>Securely store wills, power of attorney, and other legal documents with controlled, time-based access for designated individuals.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon"><i class="fas fa-book-open"></i></div>
+                        <h3>Preserve Your Memories</h3>
+                        <p>Store personal videos, letters, and important messages so your loved ones can remember you and feel connected, keeping your memories alive.</p>
+                    </div>
+                    <div class="feature-card fade-in delay-1">
+                        <div class="feature-icon"><i class="fas fa-globe"></i></div>
+                        <h3>Multi-Currency Support</h3>
+                        <p>Manage assets in 50+ currencies and all major cryptocurrencies from a single, secure dashboard with real-time conversion rates.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-dark" id="security">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Uncompromising Security</h2>
+                    <p>We've built Omnis with security and privacy at its core, using the most advanced protection methods available.</p>
+                </div>
+                <div class="security-content">
+                    <div class="security-text">
+                        <div class="security-point">
+                            <i class="fas fa-lock"></i>
+                            <div>
+                                <h3>End-to-End Encryption</h3>
+                                <p>All your data is encrypted before it leaves your device and remains encrypted in our servers. We use AES-256 encryption, the same standard adopted by governments and financial institutions worldwide.</p>
+                            </div>
+                        </div>
+                        <div class="security-point">
+                            <i class="fas fa-fingerprint"></i>
+                            <div>
+                                <h3>Biometric Authentication</h3>
+                                <p>Access your account securely with fingerprint or facial recognition technology. Multi-factor authentication is required for all sensitive operations.</p>
+                            </div>
+                        </div>
+                        <div class="security-point">
+                            <i class="fas fa-user-shield"></i>
+                            <div>
+                                <h3>Zero-Knowledge Architecture</h3>
+                                <p>We never have access to your unencrypted data or master password. Your information remains secure even from our own employees.</p>
+                            </div>
+                        </div>
+                        <div class="security-point">
+                            <i class="fas fa-server"></i>
+                            <div>
+                                <h3>Distributed Storage</h3>
+                                <p>Your encrypted data is distributed across multiple secure locations worldwide for redundancy and protection against regional disasters.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="security-visual">
+                        <h3>Security Certifications</h3>
+                        <p>Omnis maintains the highest security standards with regular third-party audits and certifications:</p>
+                        <ul style="margin-top: 1.5rem; list-style: none;">
+                            <li style="margin-bottom: 1rem;"><i class="fas fa-check-circle" style="color: var(--accent-light); margin-right: 0.5rem;"></i> SOC 2 Type II Certified</li>
+                            <li style="margin-bottom: 1rem;"><i class="fas fa-check-circle" style="color: var(--accent-light); margin-right: 0.5rem;"></i> ISO 27001 Compliant</li>
+                            <li style="margin-bottom: 1rem;"><i class="fas fa-check-circle" style="color: var(--accent-light); margin-right: 0.5rem;"></i> GDPR & CCPA Compliant</li>
+                            <li style="margin-bottom: 1rem;"><i class="fas fa-check-circle" style="color: var(--accent-light); margin-right: 0.5rem;"></i> Regular Penetration Testing</li>
+                            <li style="margin-bottom: 1rem;"><i class="fas fa-check-circle" style="color: var(--accent-light); margin-right: 0.5rem;"></i> Bank-Level Security Protocols</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-light" id="pricing">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Simple, Transparent Pricing</h2>
+                    <p>Choose the plan that works best for you and your family's needs. All plans include our core security features.</p>
+                </div>
+                <div class="pricing-plans">
+                    <div class="pricing-card fade-in">
+                        <div class="plan-name">Essential</div>
+                        <div class="plan-price">₹499<span>/year</span></div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Up to 10 assets</li>
+                            <li><i class="fas fa-check"></i> 1 designated heir</li>
+                            <li><i class="fas fa-check"></i> Basic encryption</li>
+                            <li><i class="fas fa-check"></i> Email support</li>
+                            <li><i class="fas fa-times"></i> Crypto wallet support</li>
+                            <li><i class="fas fa-times"></i> Legal document storage</li>
+                            <li><i class="fas fa-times"></i> Priority verification</li>
+                        </ul>
+                        <button class="btn btn-outline" id="getStartedPrice1">Get Started</button>
+                    </div>
+                    <div class="pricing-card featured fade-in delay-1" style="position: relative;">
+                        <div class="popular-badge">MOST POPULAR</div>
+                        <div class="plan-name">Professional</div>
+                        <div class="plan-price">₹1,299<span>/year</span></div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Up to 50 assets</li>
+                            <li><i class="fas fa-check"></i> 5 designated heirs</li>
+                            <li><i class="fas fa-check"></i> Advanced encryption</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                            <li><i class="fas fa-check"></i> Crypto wallet support</li>
+                            <li><i class="fas fa-check"></i> Legal document storage</li>
+                            <li><i class="fas fa-check"></i> Priority verification</li>
+                        </ul>
+                        <button class="btn btn-primary" id="getStartedPrice2">Get Started</button>
+                    </div>
+                    <div class="pricing-card fade-in delay-2">
+                        <div class="plan-name">Family</div>
+                        <div class="plan-price">₹2,499<span>/year</span></div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Unlimited assets</li>
+                            <li><i class="fas fa-check"></i> 10 designated heirs</li>
+                            <li><i class="fas fa-check"></i> Military-grade encryption</li>
+                            <li><i class="fas fa-check"></i> 24/7 dedicated support</li>
+                            <li><i class="fas fa-check"></i> All asset types supported</li>
+                            <li><i class="fas fa-check"></i> Family dashboard</li>
+                            <li><i class="fas fa-check"></i> Instant verification</li>
+                        </ul>
+                        <button class="btn btn-outline" id="getStartedPrice3">Get Started</button>
+                    </div>
+                </div>
+                
+                <div class="trust-badges">
+                    <div class="trust-badge"><i class="fas fa-shield-check"></i> 256-bit Encryption</div>
+                    <div class="trust-badge"><i class="fas fa-lock"></i> Zero-Knowledge</div>
+                    <div class="trust-badge"><i class="fas fa-user-shield"></i> GDPR Compliant</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-gray" id="faq">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Frequently Asked Questions</h2>
+                    <p>Find answers to common questions about Omnis and digital inheritance.</p>
+                </div>
+                <div class="faq-container">
+                    <div class="faq-item fade-in">
+                        <div class="faq-question">
+                            How is Omnis different from a traditional will?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>While a traditional will covers physical assets and is executed through probate court, Omnis specializes in digital and financial assets (like crypto, social media, and dormant accounts) that often fall outside traditional estate planning. We provide immediate, secure access without probate delays, and our AI discovers assets your heirs might not even know about. We are designed to work *with* your will, not replace it.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in delay-1">
+                        <div class="faq-question">
+                            What happens if I'm temporarily unavailable?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Omnis has sophisticated inactivity monitoring with customizable thresholds. If you don't interact with your account for a predetermined period (which you set), we initiate a multi-step check-in process. Only after exhaustive verification (including attempts to contact you and your trusted contacts) of a permanent incapacity or passing will we begin the inheritance process.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in delay-2">
+                        <div class="faq-question">
+                            How do you verify someone has passed away?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>We use a multi-step verification process that combines technology and human oversight. This includes checking official death records, requiring certification from multiple designated trusted contacts, and our internal verification team. This human-centered approach prevents false triggers while ensuring legitimate cases are handled promptly and respectfully.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in delay-3">
+                        <div class="faq-question">
+                            Is my data safe with Omnis?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Absolutely. We employ bank-level security with end-to-end encryption. We use a zero-knowledge architecture, so we *never* have access to your unencrypted data or your master password—not even for customer support. We conduct regular third-party security audits to ensure we maintain the highest protection standards and are compliant with global data protection regulations like GDPR.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-light">
+            <div class="container">
+                <div class="cta fade-in">
+                    <h2>Secure Your Digital Legacy Today</h2>
+                    <p>Join thousands of families trusting Omnis to protect trillions in digital wealth and help unlock the **₹1.84 Lakh Crore** in unclaimed assets in India. Start with a 30-day free trial.</p>
+                    <button class="btn btn-accent" id="startTrialBtn">
+                        <i class="fas fa-shield-alt"></i> Start Free Trial
+                    </button>
+                    <div class="trust-badges" style="margin-top: 2rem; justify-content: center;">
+                        <div class="trust-badge"><i class="fas fa-check-circle"></i> No credit card required</div>
+                        <div class="trust-badge"><i class="fas fa-clock"></i> Setup in 5 minutes</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <main class="page section-gray" id="page-login">
+        <div class="container">
+            <div class="form-card">
+                <h2>Welcome Back</h2>
+                <p class="text-center mt-2">Sign in to manage your legacy.</p>
+                <form id="loginForm">
+                    <div class="form-group mt-2">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                </form>
+                <p class="text-center mt-2">
+                    Don't have an account? <a href="#" class="text-link" id="showSignUpBtn">Create one</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <main class="page section-gray" id="page-signup">
+        <div class="container">
+            <div class="form-card">
+                <h2>Create Your Account</h2>
+                <p class="text-center mt-2">Start securing your digital legacy today.</p>
+                <form id="signUpForm">
+                    <div class="form-group mt-2">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" placeholder="Create a strong password" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="signup-password-confirm">Confirm Password</label>
+                        <input type="password" id="signup-password-confirm" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+                <p class="text-center mt-2">
+                    Already have an account? <a href="#" class="text-link" id="showLoginBtn">Sign In</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+
+    <main class="page section-gray" id="page-dashboard">
+        <div class="container">
+            <div class="dash-container">
+                <aside class="dash-sidebar">
+                    <div class="dash-sidebar-header">
+                        <h3>My Legacy</h3>
+                        <p id="welcome-user-name">user@example.com</p>
+                    </div>
+                    <ul class="dash-nav">
+                        <li><a id="nav-dash-home" data-target="dash-home" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li><a id="nav-dash-assets" data-target="dash-assets"><i class="fas fa-wallet"></i> My Assets</a></li>
+                        <li><a id="nav-dash-nominees" data-target="dash-nominees"><i class="fas fa-users"></i> My Nominees</a></li>
+                        <li><a id="nav-dash-will" data-target="dash-will"><i class="fas fa-file-alt"></i> Digital Will</a></li>
+                        <li><a id="nav-dash-verification" data-target="dash-verification"><i class="fas fa-shield-alt"></i> Verification</a></li>
+                        <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </aside>
+                
+                <section class="dash-content">
+                    
+                    <div class="dash-section active" id="dash-home">
+                        <div class="dash-card-header" style="border: none; margin-bottom: 0;">
+                            <h2>Legacy Health Check</h2>
+                        </div>
+                        <div class="dash-summary">
+                            <div class="summary-card">
+                                <div class="summary-title">Legacy Readiness</div>
+                                <div class="summary-value" id="summary-readiness-score">0%</div>
+                                <div class="progress-bar">
+                                    <div class="progress-bar-inner" id="summary-readiness-bar" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-title">Total Value Secured</div>
+                                <div class="summary-value" id="summary-total-value">₹0</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-title">Total Assets</div>
+                                <div class="summary-value" id="summary-total-assets">0</div>
+                            </div>
+                            <div class="summary-card warning">
+                                <div class="summary-title">Unassigned Assets</div>
+                                <div class="summary-value" id="summary-unassigned">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-section" id="dash-assets">
+                        <div class="dash-card-header">
+                            <h2>My Asset Vault</h2>
+                            <button class="btn btn-primary btn-sm" id="showAddAssetBtn">
+                                <i class="fas fa-plus"></i> Add New Asset
+                            </button>
+                        </div>
+                        <div class="item-list" id="asset-list-container">
+                            <p class="placeholder-text">You haven't added any assets yet. Click "Add New Asset" to get started.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dash-section" id="dash-nominees">
+                        <div class="dash-card-header">
+                            <h2>My Nominees</h2>
+                            <button class="btn btn-primary btn-sm" id="showAddNomineeBtn">
+                                <i class="fas fa-user-plus"></i> Add New Nominee
+                            </button>
+                        </div>
+                        <div class="item-list" id="nominee-list-container">
+                            <p class="placeholder-text">You haven't added any nominees yet. Click "Add New Nominee" to protect your assets.</p>
+                        </div>
+                    </div>
+
+                    <div class="dash-section" id="dash-will">
+                        <div class="dash-card-header">
+                            <h2>Digital Will & Final Messages</h2>
+                        </div>
+                        <div class="dash-card" style="padding: 0; box-shadow: none;">
+                            <form id="digitalWillForm">
+                                <div class="form-group">
+                                    <label for="will-document">Upload Legal Will (Simulated)</label>
+                                    <input type="file" id="will-document">
+                                    <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">Upload a scanned copy of your formal, signed will for safekeeping.</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="will-message">Final Message to Loved Ones (Encrypted)</label>
+                                    <textarea id="will-message" rows="8" placeholder="Write a final message that will be securely delivered to your nominees along with your assets..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save Digital Will</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="dash-section" id="dash-verification">
+                        <div class="dash-card-header">
+                            <h2>Verification Protocol</h2>
+                        </div>
+                        <div class="dash-card" style="padding: 0; box-shadow: none;">
+                            <form id="verificationForm">
+                                <div class="form-group">
+                                    <label for="inactivity-monitor">Inactivity Monitor</label>
+                                    <select id="inactivity-monitor">
+                                        <option value="6">Contact me after 6 months of inactivity</option>
+                                        <option value="12" selected>Contact me after 1 year of inactivity</option>
+                                        <option value="24">Contact me after 2 years of inactivity</option>
+                                        <option value="0">Disable Inactivity Monitor</option>
+                                    </select>
+                                    <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">We will contact you via multiple channels if your account is inactive for this period.</p>
+                                </div>
+                                <hr style="border: none; border-top: 1px solid var(--gray-light); margin: 2rem 0;">
+                                <div class="dash-card-header" style="padding: 0; border: none; margin-bottom: 1.5rem;">
+                                    <h2>Trusted Verifiers</h2>
+                                    <button type="button" class="btn btn-primary btn-sm" id="showAddVerifierBtn">
+                                        <i class="fas fa-user-plus"></i> Add Verifier
+                                    </button>
+                                </div>
+                                <p style="color: var(--gray); margin-bottom: 1.5rem;">These are people who can *verify* your status, but cannot access your assets. We require verification from at least 2 verifiers to release your legacy.</p>
+                                <div class="item-list" id="verifier-list-container">
+                                    <p class="placeholder-text">No verifiers added yet. We recommend adding at least 3.</p>
+                                    </div>
+                                <button type="submit" class="btn btn-primary mt-2">Save Protocol</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <main class="page section-gray" id="page-add-asset">
+        <div class="container">
+            <div class="form-card">
+                <h2>Add a New Asset</h2>
+                <p class="text-center mt-2">This information will be encrypted and stored securely.</p>
+                <form id="addAssetForm">
+                    <div class="form-group mt-2">
+                        <label for="asset-type">Asset Type</label>
+                        <select id="asset-type" required>
+                            <option value="" disabled selected>Select an asset type...</option>
+                            <option value="bank">Bank Account</option>
+                            <option value="crypto">Crypto Wallet</option>
+                            <option value="estate">Real Estate</option>
+                            <option value="social">Social Media</option>
+                            <option value="file">Digital File</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="asset-name">Asset Name / Description</label>
+                        <input type="text" id="asset-name" placeholder="e.g., HDFC Salary Account, BTC Ledger" required>
+                    </div>
+                    <div class="form-group-inline">
+                        <div class="form-group">
+                            <label for="asset-value">Estimated Value (₹)</label>
+                            <input type="number" id="asset-value" placeholder="e.g., 50000" min="0" step="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="asset-doc">Upload Document (Simulated)</label>
+                            <input type="file" id="asset-doc">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="asset-details">Access Details (Encrypted)</label>
+                        <textarea id="asset-details" placeholder="e.g., Account number, username, private key location. This will be end-to-end encrypted."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="asset-nominee">Assign to Nominee</label>
+                        <select id="asset-nominee" required>
+                            <option value="unassigned">Unassigned</option>
+                            </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Save Asset</button>
+                    <button type="button" class="btn btn-outline btn-full" id="cancelAssetBtn" style="margin-top: 1rem;">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <main class="page section-gray" id="page-add-nominee">
+        <div class="container">
+            <div class="form-card">
+                <h2>Add a New Nominee</h2>
+                <p class="text-center mt-2">This person will be authorized to access your designated assets after verification.</p>
+                <form id="addNomineeForm">
+                    <div class="form-group mt-2">
+                        <label for="nominee-name">Full Name</label>
+                        <input type="text" id="nominee-name" placeholder="e.g., Priya Sharma" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="nominee-relation">Relationship</label>
+                        <input type="text" id="nominee-relation" placeholder="e.g., Spouse, Son, Friend" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nominee-email">Email Address</label>
+                        <input type="email" id="nominee-email" placeholder="priya@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nominee-phone">Phone Number</label>
+                        <input type="tel" id="nominee-phone" placeholder="+91 98765 43210" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Save Nominee</button>
+                    <button type="button" class="btn btn-outline btn-full" id="cancelNomineeBtn" style="margin-top: 1rem;">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <main class="page section-gray" id="page-claim">
+        <div class="container">
+            <div class="form-card">
+                <h2>Start Your Claim</h2>
+                <p class="text-center mt-2">If you are a designated nominee, please enter your details to begin the secure claim process.</p>
+                <form id="claimForm">
+                    <div class="form-group mt-2">
+                        <label for="claim-email">Your Email Address</label>
+                        <input type="email" id="claim-email" placeholder="Your email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="claim-code">Secure Claim Code</label>
+                        <input type="text" id="claim-code" placeholder="Provided by Omnis" required>
+                    </div>
+                    <button type="submit" class="btn btn-accent btn-full">Begin Secure Verification</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="logo" style="margin-bottom: 1.5rem;" id="footerLogoBtn">
+                        <div class="logo-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h1 style="color: white; margin-bottom: 0;">Omnis</h1>
+                    </div>
+                    <p style="color: #94a3b8; margin-bottom: 1.5rem;">Secure digital inheritance for the modern world. Ensuring your assets reach the right people at the right time.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Product</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features" class="nav-anchor">Features</a></li>
+                        <li><a href="#solution" class="nav-anchor">How It Works</a></li>
+                        <li><a href="#security" class="nav-anchor">Security</a></li>
+                        <li><a href="#pricing" class="nav-anchor">Pricing</a></li>
+                        <li><a href="#faq" class="nav-anchor">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">GDPR</a></li>
+                        <li><a role="button" id="claimLinkBtn">Nominee Claim Process</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Omnis. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Simulated Database ---
+        let currentUser = null;
+        let userAssets = [];
+        let userNominees = [];
+        let userVerifiers = []; // NEW: For Verification Protocol
+        
+        // --- Page Navigation Logic ---
+        const allPages = document.querySelectorAll('.page');
+        const allNavAnchors = document.querySelectorAll('.nav-anchor');
+        
+        function showPage(pageId) {
+            allPages.forEach(page => {
+                page.classList.remove('active');
+            });
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        // --- Event Listeners ---
+        
+        // Landing Page -> Login
+        document.getElementById('secureLegacyBtn').addEventListener('click', () => showPage('page-login'));
+        document.getElementById('getStartedNavBtn').addEventListener('click', () => showPage('page-login'));
+        document.getElementById('loginNavBtn').addEventListener('click', () => showPage('page-login'));
+        document.getElementById('getStartedPrice1').addEventListener('click', () => showPage('page-login'));
+        document.getElementById('getStartedPrice2').addEventListener('click', () => showPage('page-login'));
+        document.getElementById('getStartedPrice3').addEventListener('click', () => showPage('page-login'));
+        document.getElementById('startTrialBtn').addEventListener('click', () => showPage('page-login'));
+        
+        // Logo -> Landing
+        document.getElementById('logoBtn').addEventListener('click', () => showPage('page-landing'));
+        document.getElementById('footerLogoBtn').addEventListener('click', () => showPage('page-landing'));
+        
+        // Landing Page Nav Anchors
+        allNavAnchors.forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('page-landing');
+                setTimeout(() => {
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            });
+        });
+
+        // Login Page <-> Sign Up Page
+        document.getElementById('showSignUpBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('page-signup');
+        });
+        document.getElementById('showLoginBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('page-login');
+        });
+
+        // --- Auth & Dashboard Logic ---
+
+        // Sign Up
+        document.getElementById('signUpForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const pass = document.getElementById('signup-password').value;
+            const confirmPass = document.getElementById('signup-password-confirm').value;
+
+            if (pass !== confirmPass) {
+                alert('Passwords do not match!');
+                return;
+            }
+            alert('Account created successfully! Please log in.');
+            document.getElementById('signUpForm').reset();
+            showPage('page-login');
+        });
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            currentUser = { email: email };
+            
+            document.getElementById('welcome-user-name').innerText = currentUser.email;
+            
+            renderDashboard();
+            showDashSection('dash-home'); // Default to home
+            showPage('page-dashboard');
+            document.getElementById('loginForm').reset();
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            currentUser = null;
+            userAssets = [];
+            userNominees = [];
+            userVerifiers = [];
+            showPage('page-landing');
+            alert('You have been logged out.');
+        });
+        
+        // --- Dashboard UI Logic ---
+
+        // NEW: Dashboard Section Navigation
+        const dashNavLinks = document.querySelectorAll('.dash-nav a[data-target]');
+        const dashSections = document.querySelectorAll('.dash-section');
+
+        function showDashSection(targetId) {
+            dashSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            dashNavLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            const targetSection = document.getElementById(targetId);
+            const targetLink = document.querySelector(`.dash-nav a[data-target="${targetId}"]`);
+            
+            if(targetSection) targetSection.classList.add('active');
+            if(targetLink) targetLink.classList.add('active');
+        }
+
+        dashNavLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = e.currentTarget.getAttribute('data-target');
+                showDashSection(targetId);
+            });
+        });
+        
+        // Show "Add Asset" Form
+        document.getElementById('showAddAssetBtn').addEventListener('click', () => {
+            populateNomineeDropdown();
+            showPage('page-add-asset');
+        });
+        
+        // Show "Add Nominee" Form
+        document.getElementById('showAddNomineeBtn').addEventListener('click', () => {
+            showPage('page-add-nominee');
+        });
+
+        // Show "Add Verifier" (Simulated)
+         document.getElementById('showAddVerifierBtn').addEventListener('click', () => {
+            const name = prompt("Enter Verifier's Full Name:");
+            if(name) {
+                const email = prompt(`Enter ${name}'s Email:`);
+                if(email) {
+                    userVerifiers.push({ id: Date.now(), name: name, email: email });
+                    renderDashboard(); // Re-render to show verifier list
+                    alert('Verifier added. In a real app, this would be a full form.');
+                }
+            }
+        });
+
+        // Cancel Buttons
+        document.getElementById('cancelAssetBtn').addEventListener('click', () => {
+            showPage('page-dashboard');
+            showDashSection('dash-assets'); // Go back to assets list
+        });
+        document.getElementById('cancelNomineeBtn').addEventListener('click', () => {
+             showPage('page-dashboard');
+             showDashSection('dash-nominees'); // Go back to nominees list
+        });
+
+        // Handle Add Asset
+        document.getElementById('addAssetForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const docInput = document.getElementById('asset-doc');
+            const nomineeSelect = document.getElementById('asset-nominee');
+            const selectedNominee = nomineeSelect.options[nomineeSelect.selectedIndex];
+            
+            const asset = {
+                id: Date.now(),
+                type: document.getElementById('asset-type').value,
+                name: document.getElementById('asset-name').value,
+                value: parseFloat(document.getElementById('asset-value').value) || 0,
+                doc: docInput.files.length > 0 ? docInput.files[0].name : null,
+                details: document.getElementById('asset-details').value,
+                nomineeId: selectedNominee.value,
+                nomineeName: selectedNominee.value === 'unassigned' ? 'Unassigned' : selectedNominee.text
+            };
+            userAssets.push(asset);
+            renderDashboard();
+            showPage('page-dashboard');
+            showDashSection('dash-assets'); // Land on assets list
+            document.getElementById('addAssetForm').reset();
+        });
+
+        // Handle Add Nominee
+        document.getElementById('addNomineeForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nominee = {
+                id: Date.now(),
+                name: document.getElementById('nominee-name').value,
+                email: document.getElementById('nominee-email').value,
+                phone: document.getElementById('nominee-phone').value,
+                relation: document.getElementById('nominee-relation').value
+            };
+            userNominees.push(nominee);
+            renderDashboard();
+            showPage('page-dashboard');
+            showDashSection('dash-nominees'); // Land on nominees list
+            document.getElementById('addNomineeForm').reset();
+        });
+
+        // Handle Save (Simulated) on Will & Verification
+        document.getElementById('digitalWillForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Your Digital Will & Message have been saved (simulated).');
+            showDashSection('dash-home');
+        });
+        document.getElementById('verificationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Your Verification Protocol has been saved (simulated).');
+            showDashSection('dash-home');
+        });
+
+
+        // Handle Delete
+        function handleDelete(type, id) {
+            if (confirm(`Are you sure you want to delete this ${type}?`)) {
+                if (type === 'asset') {
+                    userAssets = userAssets.filter(asset => asset.id !== id);
+                }
+                if (type === 'nominee') {
+                    const isAssigned = userAssets.some(asset => asset.nomineeId == id);
+                    if(isAssigned) {
+                        alert('This nominee is assigned to one or more assets. Please reassign those assets before deleting this nominee.');
+                        return;
+                    }
+                    userNominees = userNominees.filter(nominee => nominee.id !== id);
+                }
+                 if (type === 'verifier') {
+                    userVerifiers = userVerifiers.filter(verifier => verifier.id !== id);
+                }
+                renderDashboard();
+            }
+        }
+        
+        // --- Main Render Function ---
+        function renderDashboard() {
+            const assetList = document.getElementById('asset-list-container');
+            const nomineeList = document.getElementById('nominee-list-container');
+            const verifierList = document.getElementById('verifier-list-container');
+            
+            // Summary Cards
+            const summaryValue = document.getElementById('summary-total-value');
+            const summaryAssets = document.getElementById('summary-total-assets');
+            const summaryUnassigned = document.getElementById('summary-unassigned');
+            const summaryReadinessScore = document.getElementById('summary-readiness-score');
+            const summaryReadinessBar = document.getElementById('summary-readiness-bar');
+            
+            assetList.innerHTML = '';
+            nomineeList.innerHTML = '';
+            verifierList.innerHTML = '';
+
+            // --- Calculate Summaries ---
+            let totalValue = 0;
+            let unassignedCount = 0;
+            userAssets.forEach(asset => {
+                totalValue += asset.value;
+                if(asset.nomineeId === 'unassigned') {
+                    unassignedCount++;
+                }
+            });
+            
+            // Calculate Readiness Score
+            let readinessScore = 0;
+            if (userAssets.length > 0) readinessScore += 40;
+            if (userNominees.length > 0) readinessScore += 30;
+            if (userAssets.length > 0 && unassignedCount === 0) readinessScore += 30; // Bonus for full assignment
+            
+            const formatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+            summaryValue.innerText = formatter.format(totalValue);
+            summaryAssets.innerText = userAssets.length;
+            summaryUnassigned.innerText = unassignedCount;
+            summaryReadinessScore.innerText = `${readinessScore}%`;
+            summaryReadinessBar.style.width = `${readinessScore}%`;
+
+            // --- Render Assets ---
+            if (userAssets.length === 0) {
+                assetList.innerHTML = '<p class="placeholder-text">You haven\'t added any assets yet. Click "Add New Asset" to get started.</p>';
+            } else {
+                userAssets.forEach(asset => {
+                    const iconClass = getAssetIcon(asset.type);
+                    const nomineeColor = asset.nomineeId === 'unassigned' ? 'var(--danger)' : 'var(--accent)';
+                    assetList.innerHTML += `
+                        <div class="item-card">
+                            <div>
+                                <div class="item-card-header">
+                                    <div class="item-card-icon ${iconClass.class}"><i class="${iconClass.icon}"></i></div>
+                                    <div>
+                                        <h3>${asset.name}</h3>
+                                        <p>${asset.type.charAt(0).toUpperCase() + asset.type.slice(1)}</p>
+                                    </div>
+                                </div>
+                                <div class="item-card-body">
+                                    <div class="detail-row">
+                                        <i class="fas fa-wallet"></i> Value: <strong>${formatter.format(asset.value)}</strong>
+                                    </div>
+                                    <div class="detail-row">
+                                        <i class="fas fa-user-check" style="color: ${nomineeColor};"></i>
+                                        Assigned: <strong style="color: ${nomineeColor};">${asset.nomineeName}</strong>
+                                    </div>
+                                    <div class="detail-row">
+                                        <i class="fas fa-file-alt"></i>
+                                        Document: <strong>${asset.doc ? asset.doc : 'None'}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-card-footer">
+                                <button class="btn-icon delete" title="Delete Asset" onclick="handleDelete('asset', ${asset.id})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // --- Render Nominees ---
+            if (userNominees.length === 0) {
+                nomineeList.innerHTML = '<p class="placeholder-text">You haven\'t added any nominees yet. Click "Add New Nominee" to protect your assets.</p>';
+            } else {
+                userNominees.forEach(nominee => {
+                    // NEW: Find assets assigned to this nominee
+                    const assignedAssets = userAssets.filter(asset => asset.nomineeId == nominee.id);
+                    let assignedAssetsHtml = '<p class="placeholder-text-small">No assets assigned yet.</p>';
+                    
+                    if (assignedAssets.length > 0) {
+                        assignedAssetsHtml = '<ul>';
+                        assignedAssets.forEach(asset => {
+                            assignedAssetsHtml += `<li><i class="fas fa-wallet"></i> ${asset.name}</li>`;
+                        });
+                        assignedAssetsHtml += '</ul>';
+                    }
+
+                    nomineeList.innerHTML += `
+                        <div class="item-card">
+                            <div>
+                                <div class="item-card-header">
+                                    <div class="item-card-icon icon-nominee"><i class="fas fa-user-check"></i></div>
+                                    <div>
+                                        <h3>${nominee.name}</h3>
+                                        <p>${nominee.relation}</p>
+                                    </div>
+                                </div>
+                                <div class="item-card-body">
+                                    <div class="detail-row">
+                                        <i class="fas fa-envelope"></i>
+                                        <strong>${nominee.email}</strong>
+                                    </div>
+                                    <div class="detail-row">
+                                        <i class="fas fa-phone"></i>
+                                        <strong>${nominee.phone}</strong>
+                                    </div>
+                                    <h4 style="font-size: 1rem; color: var(--primary); margin-top: 1.5rem; margin-bottom: 0.5rem; border-top: 1px dashed var(--gray-light); padding-top: 1.5rem;">Assigned Assets</h4>
+                                    ${assignedAssetsHtml}
+                                </div>
+                            </div>
+                            <div class="item-card-footer">
+                                <button class="btn-icon delete" title="Delete Nominee" onclick="handleDelete('nominee', ${nominee.id})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // --- Render Verifiers (NEW) ---
+            if (userVerifiers.length === 0) {
+                verifierList.innerHTML = '<p class="placeholder-text">No verifiers added yet. We recommend adding at least 3.</p>';
+            } else {
+                 userVerifiers.forEach(verifier => {
+                    verifierList.innerHTML += `
+                        <div class="item-card">
+                            <div>
+                                <div class="item-card-header">
+                                    <div class="item-card-icon icon-verifier"><i class="fas fa-user-shield"></i></div>
+                                    <div>
+                                        <h3>${verifier.name}</h3>
+                                        <p>${verifier.email}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-card-footer">
+                                <button class="btn-icon delete" title="Delete Verifier" onclick="handleDelete('verifier', ${verifier.id})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+        
+        function getAssetIcon(type) {
+            switch(type) {
+                case 'bank': return { class: 'icon-bank', icon: 'fas fa-university' };
+                case 'crypto': return { class: 'icon-crypto', icon: 'fab fa-bitcoin' };
+                case 'social': return { class: 'icon-social', icon: 'fas fa-hashtag' };
+                case 'file': return { class: 'icon-file', icon: 'fas fa-file-alt' };
+                case 'estate': return { class: 'icon-estate', icon: 'fas fa-home' };
+                default: return { class: 'icon-other', icon: 'fas fa-question-circle' };
+            }
+        }
+
+        // --- Helper Functions ---
+        
+        function populateNomineeDropdown() {
+            const select = document.getElementById('asset-nominee');
+            select.innerHTML = '<option value="unassigned">Unassigned</option>';
+            
+            if(userNominees.length === 0) {
+                select.options[0].text = "No nominees added yet";
+                select.disabled = true;
+            } else {
+                select.disabled = false;
+                userNominees.forEach(nominee => {
+                    select.innerHTML += `<option value="${nominee.id}">${nominee.name} (${nominee.relation})</option>`;
+                });
+            }
+        }
+
+
+        // --- Other Page Logic ---
+        
+        // Nominee Claim Link
+        document.getElementById('claimLinkBtn').addEventListener('click', () => {
+            showPage('page-claim');
+        });
+
+        // Claim Form
+        document.getElementById('claimForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Verification Started. In a real application, you would be contacted by an Omnis verification specialist shortly.');
+            showPage('page-landing');
+        });
+
+        // --- Original UI Script ---
+        
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.querySelector('.nav-links');
+        const authButtons = document.querySelector('.auth-buttons');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            authButtons.classList.toggle('active');
+        });
+        
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentNode;
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Fade in animation on scroll (for landing page only)
+        const fadeElements = document.querySelectorAll('#page-landing .fade-in');
+        const fadeInOnScroll = () => {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('active-anim');
+                }
+            });
+        };
+        window.addEventListener('scroll', fadeInOnScroll);
+        fadeInOnScroll();
+        
+    </script>
+</body>
+</html>
