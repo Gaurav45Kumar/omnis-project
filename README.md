@@ -2,8 +2,6 @@
 
 > Addressing the ₹82,000 Crore Unclaimed Assets Problem in India
 
-![Omnis Dashboard](assets/images/dashboard-screenshot.png)
-
 ## 🚀 Overview
 
 Omnis is a web-based digital inheritance platform that ensures your financial and digital assets are securely transferred to your heirs. Developed during **FinWiz 1.0 Fintech Hackathon** where the idea was officially accepted.
@@ -26,8 +24,11 @@ Omnis combines simulated encryption with human verification to create a reliable
 - 🔐 **Multi-Layer Verification** - Human-centered verification protocols
 - 📱 **Responsive Design** - Mobile-first approach for all devices
 
-## 🎯 Live Demo
 
-[**Try Omnis Live**](https://your-username.github.io/omnis-digital-inheritance)
+## 🛠️ Technologies Used
 
-## 🏗️ Project Structure
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Styling**: CSS Grid, Flexbox, Custom Properties
+- **Icons**: Font Awesome 6.4.0
+- **Fonts**: Google Fonts (Inter)
+- **Responsive**: Mobile-first media queries
