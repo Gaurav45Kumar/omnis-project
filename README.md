@@ -29,6 +29,3 @@ Omnis combines simulated encryption with human verification to create a reliable
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
 - **Styling**: CSS Grid, Flexbox, Custom Properties
-- **Icons**: Font Awesome 6.4.0
-- **Fonts**: Google Fonts (Inter)
-- **Responsive**: Mobile-first media queries
